@@ -58,27 +58,21 @@ public class HomeController {
         return "welcome";
     }
 
-    @RequestMapping(value = "/result1", method = RequestMethod.POST)
-    public ModelAndView route(@RequestParam("streetNum") String street,
-                              @RequestParam("routee") String routeM,
-                              @RequestParam("local") String loc,
-                              @RequestParam("postal") String post,
-                              @RequestParam("count") String count,
-                              @RequestParam("strtN") String strt,
-                              @RequestParam("rou") String rout,
-                              @RequestParam("loca") String local,
-                              @RequestParam("posta") String postal,
-                              @RequestParam("userCountry") String userCount) {
+
+
+    @RequestMapping(value = "/summary", method = RequestMethod.POST)
+    public String results(Model model, @RequestParam("streetNum") String street,
+                          @RequestParam("routee") String routeM,
+                          @RequestParam("local") String loc,
+                          @RequestParam("postal") String post,
+                          @RequestParam("count") String count,
+                          @RequestParam("strtN") String strt,
+                          @RequestParam("rou") String rout,
+                          @RequestParam("loca") String local,
+                          @RequestParam("posta") String postal,
+                          @RequestParam("userCountry") String userCount ) {
         String fromAdd = street + " " + routeM + " " + loc + " " + post + " " + count;
         String toAdd = strt + " " + rout + " " + local + " " + postal + " " + userCount;
-
-        return new ModelAndView("result1", "addStuff", fromAdd + " " + toAdd);
-    }
-
-
-
-    @RequestMapping(value = "/results")
-    public String results(Model model) {
         List <Product> results;
         List <PriceEstimate> prices;
         List <TimeEstimate> duration;
@@ -86,11 +80,11 @@ public class HomeController {
 
         try {
 
-            Coordinates results12 = GoogleGeocode.geocode("1570 Woodward Ave, Detroit, MI 48225, USA");
+            Coordinates results12 = GoogleGeocode.geocode(fromAdd);
             float googleLat = (float)results12.latitude;
             float googleLong = (float)results12.longitude;
 
-            Coordinates results13 = GoogleGeocode.geocode("1 Washington Blvd, Detroit, MI 48226, USA");
+            Coordinates results13 = GoogleGeocode.geocode(toAdd);
             float googleLat2 = (float)results13.latitude;
             float googleLong2 = (float)results13.longitude;
 
@@ -127,7 +121,7 @@ public class HomeController {
             //Lyft Price (Standard and LyftPlus(4+ people)
             try {
                 LyftPublicApi lyftPublicApi = new LyftApiFactory(apiConfig).getLyftPublicApi();
-                Call<CostEstimateResponse> costEstimateCall = lyftPublicApi.getCosts(37.7833, -122.4167, "lyft", 37.7794703, -122.4233223);
+                Call<CostEstimateResponse> costEstimateCall = lyftPublicApi.getCosts(results12.latitude, results12.longitude, "lyft", results13.latitude, results13.longitude);
                 Response<CostEstimateResponse> lyftResultsStandard = costEstimateCall.execute();
                 CostEstimateResponse body = lyftResultsStandard.body();
                 List<CostEstimate> pricesLyftStandard = body.cost_estimates;
@@ -148,7 +142,7 @@ public class HomeController {
 
             try {
                 LyftPublicApi lyftPublicApi = new LyftApiFactory(apiConfig).getLyftPublicApi();
-                Call<CostEstimateResponse> costEstimateCall = lyftPublicApi.getCosts(37.7833, -122.4167, "lyft_plus", 37.7794703, -122.4233223);
+                Call<CostEstimateResponse> costEstimateCall = lyftPublicApi.getCosts(results12.latitude, results12.longitude, "lyft_plus", results13.latitude, results13.longitude);
                 Response<CostEstimateResponse> lyftResultsPlus = costEstimateCall.execute();
                 CostEstimateResponse body = lyftResultsPlus.body();
                 List<CostEstimate> pricesLyftPlus = body.cost_estimates;
