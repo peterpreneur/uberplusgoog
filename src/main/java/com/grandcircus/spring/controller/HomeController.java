@@ -28,6 +28,14 @@ import org.springframework.web.servlet.ModelAndView;
 import retrofit2.Call;
 import retrofit2.Response;
 
+import com.grandcircus.spring.util.routeMe;
+import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.servlet.ModelAndView;
+
 import java.io.IOException;
 import java.util.List;
 
@@ -50,13 +58,24 @@ public class HomeController {
         return "welcome";
     }
 
-    @RequestMapping(value = {"/result"},method = {RequestMethod.POST}
-    )
-    public ModelAndView route(@RequestParam("streetNum") String street, @RequestParam("routee") String routeM, @RequestParam("local") String loc, @RequestParam("postal") String post, @RequestParam("count") String count, @RequestParam("strtN") String strt, @RequestParam("rou") String rout, @RequestParam("loca") String local, @RequestParam("posta") String postal, @RequestParam("userCountry") String userCount) {
-        String user = street + " " + routeM + " " + loc + " " + post + " " + count;
-        String info = strt + " " + rout + " " + local + " " + postal + " " + userCount;
-        return new ModelAndView("result", "addStuff", user + " " + info);
+    @RequestMapping(value = "/result1", method = RequestMethod.POST)
+    public ModelAndView route(@RequestParam("streetNum") String street,
+                              @RequestParam("routee") String routeM,
+                              @RequestParam("local") String loc,
+                              @RequestParam("postal") String post,
+                              @RequestParam("count") String count,
+                              @RequestParam("strtN") String strt,
+                              @RequestParam("rou") String rout,
+                              @RequestParam("loca") String local,
+                              @RequestParam("posta") String postal,
+                              @RequestParam("userCountry") String userCount) {
+        String fromAdd = street + " " + routeM + " " + loc + " " + post + " " + count;
+        String toAdd = strt + " " + rout + " " + local + " " + postal + " " + userCount;
+
+        return new ModelAndView("result1", "addStuff", fromAdd + " " + toAdd);
     }
+
+
 
     @RequestMapping(value = "/results")
     public String results(Model model) {
