@@ -23,7 +23,7 @@
                     <h3 class="card-title">${product}</h3>
                     <p class="card-text">${descrip} <br> No. of Riders: ${cap}</p>
                     <h4 class="card-title">${price}</h4>
-                    <h4 class="card-title">ETA (min): ${time} : (mile): ${mile}</h4>
+                    <h4 class="card-title">ETA (min): ${time}</h4>
                     <a href="#" class="btn btn-primary">Call Uber</a>
                 </div>
             </div>
@@ -32,7 +32,9 @@
             <div class="card">
                 <div class="card-block">
                     <h3 class="card-title">LYFT</h3>
-                    <p class="card-text">With supporting text below as a natural lead-in to additional content.</p>
+                    <p class="card-text">LYFT Standard <br> No. of Riders: 4 </p>
+                    <h4 class="card-title">${displayPriceMin} - ${displayPriceMax}</h4>
+                    <h4 class="card-title">ETA (min): ${driverETA}</h4>
                     <a href="#" class="btn btn-primary">Call Lyft</a>
                 </div>
             </div>
@@ -82,6 +84,10 @@
 <%--</c:forEach>--%>
 <%--</table>--%>
 
+
+
+<p>Here is Lyft's Min price: ${displayPriceMinPlus}</p>
+<p>Here is Lyft's Driver Eta: ${driverETA}</p>
 
 <script src="https://code.jquery.com/jquery-3.1.1.slim.min.js"
         integrity="sha384-A7FZj7v+d/sdmMqp/nOQwliLvUsJfDHW+k9Omg/a/EheAdgtzNs3hpfag6Ed950n"
